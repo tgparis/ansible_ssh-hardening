@@ -1,0 +1,21 @@
+---
+# SSH Hardening
+- hosts: hosts
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: false
+  tasks:
+    - name: Copy script
+      copy:
+        src: /mnt/e/source/ssh-hardening/files/ssh_hardening.sh
+        dest: /home/tparis
+        mode: 0777
+
+    - name: Execute script
+      command: sh /home/tparis/ssh_hardening.sh
+   
+    - name: Restart SSHD
+      service:
+        name: sshd
+        state: restarted
